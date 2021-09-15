@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
+   [ApiController]
     [Route("api/[controller]")]
 
     public class ProductsController : ControllerBase
@@ -25,6 +25,7 @@ namespace API.Controllers
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
             var products = await _repo.GetProductsAsync();
+
             return Ok(products);
 
         }
@@ -34,6 +35,18 @@ namespace API.Controllers
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
              return await _repo.GetProductByIdAsync(id);
+        }
+        
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            return Ok (await _repo.GetProductsBrandsAsync());
+        }
+
+         [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProducTypes()
+        {
+            return Ok (await _repo.GetProductTypesAsync());
         }
 
 
