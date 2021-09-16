@@ -1,12 +1,14 @@
 
 
+using System.Linq;
+using API.Errors;
 using API.Helpers;
 using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,24 @@ namespace API
                     x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+            services.ConfigureAll<ApiBehaviorOptions>(options => 
+            {
+                options.InvalidModelStateResponseFactory = ApplicationModelConventionExtensions =>
+                {
+                    var errors = ApplicationModelConventionExtensions.ModelState
+                       .Where(e => e.Value.Errors.Count > 0)
+                       .SelectMany(x => x.Value.Errors)
+                       .Select(x => x.ErrorMessage).ToArray();
+
+                       var errorResponse = new ApiValidationErrorResponse
+                       {
+                           Errors = errors
+
+                       };
+
+                       return new BadRequestObjectResult(errorResponse);
+                };
+            });
           
         }
 
