@@ -29,7 +29,7 @@
         <section class="col-9">
             <div class="d-lex justify-cotend-between align-items-center pb-2">
                 <header>
-                    <span>Showing<strong>10</strong> o <strong>16</strong>Results</span>
+                    <span>Showing<strong> 10</strong> of <strong>16 </strong>Results</span>
                 </header>
                 <div class="form-inline mt-2">
                     <input type="text" class="form-control mr-2" style="width: 300px;" placeholder="Search">
@@ -39,8 +39,8 @@
             </div>
            
             <div class="row">
-                <div class="col-4" *ngFor="let product of products">
-                    <app-product-item></app-product-item>
+                <div class="col-4 mb-4" *ngFor="let item of products">
+                    <app-product-item [product]="item"></app-product-item>
 
                 </div>
                  
