@@ -29,6 +29,7 @@ export class ShopComponent implements OnInit {
     this.getBrands();
     this.getTypes();   
   }
+  
   getProducts() {
     this.shopService.getProducts(this.shopParams).subscribe(response => {
       this.products = response.data;
@@ -68,6 +69,11 @@ export class ShopComponent implements OnInit {
 
   onSortSelected(sort: string) {
     this.shopParams.sort = sort;
+    this.getProducts();
+  }
+
+  onPageChanged(event: any) {
+    this.shopParams.pageNumber = event.page;
     this.getProducts();
   }
   }
