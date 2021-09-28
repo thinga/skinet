@@ -4,7 +4,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.5.21301.9"/>
-    <PackageReference Include="StackExchange.Redis" Version="2.2.62"/>
+    <PackageReference Include="StackExchange.Redis" Version="2.2.50"/>
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
