@@ -43,7 +43,7 @@ namespace API
             });
 
             services.AddControllers();
-           
+            services.AddIdentityServices();
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
