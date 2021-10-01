@@ -1,6 +1,7 @@
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
+using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -43,7 +44,7 @@ namespace API
             });
 
             services.AddControllers();
-            services.AddIdentityServices();
+            services.AddIdentityServices(_config);
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
@@ -72,6 +73,7 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwaggerDocumention();
