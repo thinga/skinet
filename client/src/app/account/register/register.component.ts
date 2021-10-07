@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
       email: [null, 
         [Validators.required, Validators
         .pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')],
+        [this.validateEmailNotTaken()]
       ],
       password: [null, Validators.required]
     });
@@ -39,5 +40,22 @@ export class RegisterComponent implements OnInit {
       console.log(error);
       this.errors = error.errors;
     })
+  }
+
+  validateEmailNotTaken(): AsyncValidatorFn {
+    return control => {
+      return timer(500).pipe(
+        switchMap(() => {
+          if (!control.value) {
+            return of(null);
+          }
+          return this.accountService.checkEmailExists(control.value).pipe(
+            map(res => {
+               return res ? {emailExists: true} : null;
+            })
+          );
+        })
+      )
+    }
   }
 }
