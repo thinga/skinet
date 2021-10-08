@@ -32,7 +32,7 @@ namespace Infrastructure.Data
                 }
             
 
-                  if (!context.ProductTypes.Any())
+                if (!context.ProductTypes.Any())
                 {
                     var typesData =
                     File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
@@ -49,7 +49,7 @@ namespace Infrastructure.Data
                 }
 
 
-                  if (!context.Products.Any())
+                if (!context.Products.Any())
                 {
                     var productsData =
                     File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
@@ -65,7 +65,8 @@ namespace Infrastructure.Data
                     await context.SaveChangesAsync();
                 }
 
-                    if (!context.DeliveryMethods.Any())
+
+                if (!context.DeliveryMethods.Any())
                 {
                     var dmData =
                     File.ReadAllText("../Infrastructure/Data/SeedData/delivery.json");
