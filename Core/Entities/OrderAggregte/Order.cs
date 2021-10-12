@@ -21,6 +21,8 @@ namespace Core.Entities.OrderAggregte
          
         }
 
+        
+
         public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
         public Address ShipToAddress { get; set; }
