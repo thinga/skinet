@@ -26,6 +26,7 @@ namespace Infrastructure.Services
 
             // get items from the product repo
             var items = new List<OrderItem>();
+
             foreach (var item in basket.Items)
             {
                 var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
@@ -41,7 +42,7 @@ namespace Infrastructure.Services
 
 
             // calc subtotal
-            var subtotal = items.Sum(items => items.Price * items.Quantity);
+            var subtotal = items.Sum(item => item.Price * item.Quantity);
 
 
             // create order
@@ -67,7 +68,7 @@ namespace Infrastructure.Services
             return await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
         }
 
-        public async  Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
+        public async Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
         {
              var spec = new  OrdersWithItemsAndOrderingSpecification(id, buyerEmail);
 
