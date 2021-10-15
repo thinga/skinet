@@ -17,7 +17,7 @@ export class BasketSummaryComponent implements OnInit {
 
   constructor(private basketService: BasketService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.basket$ = this.basketService.basket$;
   }
 
