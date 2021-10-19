@@ -27,11 +27,11 @@
             <strong>Welcome {{(currentUser$ | async).displayName}}</strong>
           </a>
            <div class="dropdown-menu dropdown-menu-right" style="cursor: pointer;" *dropdownMenu>
-            <a routeLink="/basket"class="dropdown-item d-flex align-items-center py-2">
+            <a routerLink="/basket"class="dropdown-item d-flex align-items-center py-2">
               <i class="fa fa-shopping-cart mr-3"> </i>View Basket
             </a>
-            <a routerLink="/oders" class="dropdown-item d-flex align-items-center py-2">
-              <i class="fa fa-history mr-3"> </i>View Orders
+            <a routerLink="/order" class="dropdown-item d-flex align-items-center py-2">
+              <i class="fa fa-history mr-3"></i> View Orders
             </a>
             <div class="dropdown-divider"></div>
             <a (click)="logout()" class="dropdown-item d-flex align-items-center py-2">
@@ -39,8 +39,6 @@
             </a>
           </div>
         </div>
-        
-
       </ng-container>
     </div>
   </div>
