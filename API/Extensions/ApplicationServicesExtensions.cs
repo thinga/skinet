@@ -18,11 +18,11 @@ namespace API.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             services.AddScoped<IBasketRepository,BasketRepository>();
-             services.ConfigureAll<ApiBehaviorOptions>(options => 
+             services.Configure<ApiBehaviorOptions>(options => 
             {
-                options.InvalidModelStateResponseFactory = ApplicationModelConventionExtensions =>
+                options.InvalidModelStateResponseFactory = actionContext =>
                 {
-                    var errors = ApplicationModelConventionExtensions.ModelState
+                    var errors = actionContext.ModelState
                        .Where(e => e.Value.Errors.Count > 0)
                        .SelectMany(x => x.Value.Errors)
                        .Select(x => x.ErrorMessage).ToArray();

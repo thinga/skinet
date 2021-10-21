@@ -15,7 +15,7 @@ namespace API.Extensions
         public static string RetrieveEmailFromPrincipal(this ClaimsPrincipal user)
         {
             // return user.FindirstValue(ClaimTypes.Email);
-            return user?.Claims?.FirstOrDefault(xas => xas.Type == ClaimTypes.Email)?.Value;
+            return user.FindFirstValue(ClaimTypes.Email);
 
         }
 

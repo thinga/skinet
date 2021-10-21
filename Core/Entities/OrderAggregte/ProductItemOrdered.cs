@@ -6,10 +6,10 @@ namespace Core.Entities.OrderAggregte
         {
         }
 
-        public ProductItemOrdered(int productItemId, string productname, string pictureUrl)
+        public ProductItemOrdered(int productItemId, string productName, string pictureUrl)
         {
             ProductItemId = productItemId;
-            ProductName = productname;
+            ProductName = productName;
             PictureUrl = pictureUrl;
         }
 

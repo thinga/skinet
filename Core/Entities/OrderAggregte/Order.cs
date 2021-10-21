@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace Core.Entities.OrderAggregte
 {
     public class Order : BaseEntity
@@ -31,9 +32,11 @@ namespace Core.Entities.OrderAggregte
         public decimal Subtotal { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public string PaymentIntentId { get; set; }
-
+       
+         
         public decimal GetTotal()
         {
+           
             return Subtotal + DeliveryMethod.Price;
         }
         
