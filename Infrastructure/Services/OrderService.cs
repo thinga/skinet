@@ -12,11 +12,13 @@ namespace Infrastructure.Services
     {
         private readonly IBasketRepository _basketRepo;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
+        private readonly IPaymentService _paymentService;
+        public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork, IPaymentService paymentService)
         {
+            _paymentService = paymentService;
             _unitOfWork = unitOfWork;
             _basketRepo = basketRepo;
-        
+
         }
 
         public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
@@ -43,22 +45,29 @@ namespace Infrastructure.Services
             // calc subtotal
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
+            // check to see if oder exists
+            var spec = new OrderByPaymentIntentIdWithItemsSpecification(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if (existingOrder != null)
+            {
+                _unitOfWork.Repository<Order>().Delete(existingOrder);
+                await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
+            }
+
 
             // create order
-            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal,
+             basket.PaymentIntentId);
             _unitOfWork.Repository<Order>().Add(order);
 
 
 
             //save to db
-           
-             var result = await _unitOfWork.Complete();
 
-             if (result <= 0) return null;
+            var result = await _unitOfWork.Complete();
 
-             // delete basket
-             await _basketRepo.DeleteBasketAsync(basketId);
-        
+            if (result <= 0) return null;
 
             // return order
             return order;
@@ -71,16 +80,16 @@ namespace Infrastructure.Services
 
         public async Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
         {
-             var spec = new  OrdersWithItemsAndOrderingSpecification(id, buyerEmail);
+            var spec = new OrdersWithItemsAndOrderingSpecification(id, buyerEmail);
 
-             return await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+            return await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
         }
 
         public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
-                var spec = new  OrdersWithItemsAndOrderingSpecification(buyerEmail);
-                return await _unitOfWork.Repository<Order>().ListAsync(spec);
-          
+            var spec = new OrdersWithItemsAndOrderingSpecification(buyerEmail);
+            return await _unitOfWork.Repository<Order>().ListAsync(spec);
+
         }
     }
 }
