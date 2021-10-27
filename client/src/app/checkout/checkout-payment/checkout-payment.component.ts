@@ -23,8 +23,11 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   cardExpiry: any;
   cardCvc: any;
   cardErrors: any;
-  cardhandler = this.onChange.bind(this);
+  cardHandler = this.onChange.bind(this);
   loading = false;
+  cardNumberValid = false;
+  cardExpiryValid = false;
+  cardCvcValid = false;
 
 
   constructor(private basketService: BasketService, private checkoutService: CheckoutService,
@@ -38,15 +41,15 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
 
      this.cardNumber = element.create('cardNumber');
      this.cardNumber.mount(this.cardNumberElement.nativeElement);
-     this.cardNumber.addEventListener('change', this.cardhandler);
+     this.cardNumber.addEventListener('change', this.cardHandler);
 
      this.cardExpiry = element.create('cardExpiry');
      this.cardExpiry.mount(this.cardExpiryElement.nativeElement);
-     this.cardExpiry.addEventListener('change', this.cardhandler);
+     this.cardExpiry.addEventListener('change', this.cardHandler);
 
      this.cardCvc = element.create('cardCvc');
      this.cardCvc.mount(this.cardCvcElement.nativeElement);
-     this.cardCvc.addEventListener('change', this.cardhandler);
+     this.cardCvc.addEventListener('change', this.cardHandler);
   }
 
   ngOnDestroy(): void {
@@ -55,11 +58,23 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
     this.cardCvc.destroy();
   }
 
-  onChange({error}) {
-    if (error) {
-      this.cardErrors = error.message;
+  onChange(event) {
+    if (event.error) {
+      this.cardErrors = event.error.message;
     } else {
       this.cardErrors = null;
+    }
+    switch (event.elementType) {
+      case 'cardNumber':
+        this.cardNumberValid = event.complete;
+        break;
+      case 'cardExpiry':
+        this.cardExpiryValid = event.complete;
+        break;  
+      case 'cardCvc':
+        this.cardCvcValid = event.complete;
+        break;
+
     }
   }
 
