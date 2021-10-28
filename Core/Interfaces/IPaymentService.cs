@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Entities.OrderAggregte;
 
 namespace Core.Interfaces
 {
@@ -7,6 +8,8 @@ namespace Core.Interfaces
     {
 
         Task<CustomerBasket> CreateOrUpdatePaymentIntent(string basketId);
+        Task<Order> UpdateOrderPaymentSucceeded(string paymentIntentId);
+        Task<Order> UpdateOrderPaymentFailed(string paymentIntentId);
          
     }
 }
