@@ -105,7 +105,8 @@ namespace Infrastructure.Services
             _unitOfWork.Repository<Order>().Update(order);
 
             await _unitOfWork.Complete();
-            return null;
+
+            return order;
             
         }
     }

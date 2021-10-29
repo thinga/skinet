@@ -1,11 +1,11 @@
 using System.IO;
 using System.Threading.Tasks;
 using API.Errors;
-using AutoMapper.Configuration;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Stripe;
 using Order = Core.Entities.OrderAggregte.Order;
@@ -15,7 +15,7 @@ namespace API.Controllers
     public class PaymentsController : BaseApiController
     {
         private readonly IPaymentService _paymentService;
-        private const string WhSecret = "";
+        private const string WhSecret = "whsec_wuSaEU0TUy7QRutB5ObvvdB3CKHiIwiK";
         private readonly ILogger<PaymentsController> _logger;
         public PaymentsController(IPaymentService paymentService, ILogger<PaymentsController> logger,
                                    IConfiguration config)
@@ -50,7 +50,7 @@ namespace API.Controllers
             {
                 case "payment_intent.succeeded":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment Succeeded", intent.Id);
+                    _logger.LogInformation("Payment Succeeded");
                      order = await _paymentService.UpdateOrderPaymentSucceeded(intent.Id);
                      _logger.LogInformation("Order updated to payment received: ", order.Id);
                     break;
