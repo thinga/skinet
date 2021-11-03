@@ -10,14 +10,14 @@ namespace Infrastructure.Services
     {
         private readonly IDatabase _database;
 
-        public ResponseCacheService(IDatabase database)
+        public ResponseCacheService(IConnectionMultiplexer redis)
         {
-            _database = database;
+            _database = redis.GetDatabase();
         }
 
-        public async Task CachResponseAsync(string cacheKey, object response, TimeSpan timeToLive)
+        public async Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeToLive)
         {
-            if (response == null)
+              if (response == null)
             {
                 return;
             }
@@ -31,6 +31,8 @@ namespace Infrastructure.Services
 
             await _database.StringSetAsync(cacheKey, serialisedResponse, timeToLive);
         }
+
+      
 
         public async Task<string> GetCachedResponseAsync(string cacheKey)
         {
