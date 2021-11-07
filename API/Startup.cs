@@ -1,5 +1,4 @@
 using System.IO;
-using API.Extensions;
 using API.Helpers;
 using API.Middleware;
 using AutoMapper;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using API.Extensions;
 using Microsoft.Extensions.FileProviders;
 
 namespace API
@@ -32,11 +32,11 @@ namespace API
            
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(x =>
-                    x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+                    x.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<AppIdentityDbContext>(x => 
             {
-                x.UseSqlite(_config.GetConnectionString("IdentityConnection"));
+                x.UseNpgsql(_config.GetConnectionString("IdentityConnection"));
             });   
             
              services.AddSingleton<IConnectionMultiplexer>(c => {
